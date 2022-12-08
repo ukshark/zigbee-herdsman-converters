@@ -1,0 +1,17 @@
+const reporting = require('zigbee-herdsman-converters/lib/reporting');
+const extend = require('zigbee-herdsman-converters/lib/extend');
+
+module.exports = [
+    {
+        zigbeeModel: ['SA-030-1'],
+        model: 'SA-030',
+        vendor: 'Sonoff',
+        description: 'Smart Plug',
+        extend: extend.switch(),
+        configure: async (device, coordinatorEndpoint, logger) => {
+            const endpoint = device.getEndpoint(1);
+            await reporting.bind(endpoint, coordinatorEndpoint, ['genOnOff']);
+            await reporting.onOff(endpoint);
+        },
+    },
+];
